@@ -1,4 +1,4 @@
-# evernote-client-teach
+# evernot
 
 > A Vue.js project
 
