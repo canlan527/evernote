@@ -1,6 +1,7 @@
 <template>
   <div id="login">
     <h1>{{msg}}</h1>
+    <div class="modal-mask"></div>
   </div>
 </template>
 
