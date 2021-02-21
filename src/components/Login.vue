@@ -33,9 +33,8 @@
 
 <script>
   import Auth from '@/apis/auth'
-  Auth.getInfo().then(res => {
-    console.log(res)
-  })
+  import Bus from '@/helpers/bus'
+
   export default {
     name: 'Login',
     data() {
@@ -83,6 +82,7 @@
         Auth.register({username:this.register.username, password: this.register.password}).then(res => {
           this.register.isError = false;
           this.register.notice = '';
+          Bus.$emit('userInfo', {username: this.register.username})
           this.$router.push({path: 'notebooks'})
         }).catch(err => {
           this.register.isError = true;
@@ -104,9 +104,9 @@
         }
         
         Auth.login({username:this.login.username, password: this.login.password}).then(res => {
-          console.log(res)
           this.login.isError = false;
           this.login.notice = '';
+          Bus.$emit('userInfo', {username: this.login.username})
           // 开始跳转
           this.$router.push({path: 'notebooks'})
 
