@@ -28,7 +28,7 @@
     methods: {
       handleLogout() {
         Auth.logout().then(res => {
-          console.log(res)
+          this.$router.push({path: 'login'})
         })
       }
     },

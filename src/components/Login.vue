@@ -79,10 +79,14 @@
           this.register.notice = vRp.notice;
           return; 
         }
-        this.register.isError = false;
-        this.register.notice = '';
+        
         Auth.register({username:this.register.username, password: this.register.password}).then(res => {
-          console.log(res)
+          this.register.isError = false;
+          this.register.notice = '';
+          this.$router.push({path: 'notebooks'})
+        }).catch(err => {
+          this.register.isError = true;
+          this.register.notice = err.msg;
         })
       },
       onLogin() {
@@ -98,11 +102,19 @@
           this.login.notice = vRp.notice;
           return;
         }
-        this.login.isError = false;
-        this.login.notice = vRp.notice;
-        Auth.login({username:this.register.username, password: this.register.password}).then(res => {
+        
+        Auth.login({username:this.login.username, password: this.login.password}).then(res => {
           console.log(res)
-        })
+          this.login.isError = false;
+          this.login.notice = '';
+          // 开始跳转
+          this.$router.push({path: 'notebooks'})
+
+        }).catch(err => {
+          console.log('err' + err.msg)
+          this.isError = true;
+          this.login.notice = err.msg
+        }) 
       },
       validUsername(username) {
         return {
