@@ -6,18 +6,24 @@
         <div class="modal-container">
           <div class="main"></div>
           <div class="form">
-            <h3>创建账户</h3>
-            <div v-show="isLogin" class="register">
-              <input type="text" placeholder="用户名">
-              <input type="password" placeholder="密码">
-              <div class="button">创建账号</div>
-            </div>
-            <h3>登录</h3>
-            <div v-show="!isLogin" class="login">
-              <input type="text" placeholder="用户名">
-              <input type="password" placeholder="密码">
-              <div class="button">登录</div>
-            </div>
+            <h3 @click="showRegister">创建账户</h3>
+            <transition name="slide">
+              <div :class="{show: isShowRegister}" class="register">
+                <input type="text" placeholder="用户名" v-model="register.username">
+                <input type="password" placeholder="密码" @keyup.enter="onRegister" v-model="register.password">
+                <p :class="{error:register.isError}"> {{register.notice}} </p>
+                <div class="button" @click="onRegister">创建账号</div>
+              </div>
+            </transition>
+            <h3 @click="showLogin">登录</h3>
+            <transition name="slide">
+              <div :class="{show: isShowLogin}" class="login">
+                <input type="text" placeholder="用户名" v-model="login.username">
+                <input type="password" placeholder="密码" @keyup.enter="onLogin" v-model="login.password">
+                <p :class="{error:login.isError}"> {{login.notice}} </p>
+                <div class="button" @click="onLogin">登录</div>
+              </div>
+            </transition>
           </div>
         </div>
       </div>
@@ -31,8 +37,76 @@
     data() {
       return {
         msg: 'This is Login Page',
-        isLogin: false
+        isShowRegister: false,
+        isShowLogin: true,
+        login: {
+          username: '',
+          password: '',
+          notice: '输入用户名和密码',
+          isError: false
+        },
+        register: {
+          username: '',
+          password: '',
+          notice: '创建账号后，请记住用户名和密码',
+          isError: false
+        }
       }
+    },
+    methods: {
+      showRegister() {
+        this.isShowRegister = true;
+        this.isShowLogin = false;
+      },
+      showLogin() {
+        this.isShowLogin = true;
+        this.isShowRegister = false;
+      },
+      onRegister() {
+        let vRu = this.validUsername(this.register.username);
+        let vRp = this.validPassword(this.register.password)
+        if(!vRu.isValid) {
+          this.register.isError = true;
+          this.register.notice = vRu.notice;
+          return;
+        }
+        if(!vRp.isValid) {
+          this.register.isError = true;
+          this.register.notice = vRp.notice;
+          return; 
+        }
+        this.register.isError = false;
+        this.register.notice = '';
+      },
+      onLogin() {
+        let vRu = this.validUsername(this.login.username);
+        let vRp = this.validPassword(this.login.password)
+        if(!vRu.isValid){
+          this.login.isError = true;
+          this.login.notice = vRu.notice;
+          return;
+        }
+        if(!vRp.isValid) {
+          this.login.isError = true;
+          this.login.notice = vRp.notice;
+          return;
+        }
+        this.login.isError = false;
+        this.login.notice = vRp.notice;
+      },
+      validUsername(username) {
+        return {
+          isValid: /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(username),
+          notice:'用户名3~15个字符，仅限于字母数字下划线中文'
+        }
+      },
+      validPassword(password) {
+        return {
+          isValid: /^.{6,16}$/.test(password),
+          notice: '密码长度为6~16个字符'
+        }
+      }
+
     }
   }
 </script>
@@ -69,7 +143,10 @@
       .form {
         width: 270px;
         border-left: 1px solid #ccc;
+        overflow: hidden;
+
         h3 {
+          margin-top: -1px;
           padding: 10px 20px;
           font-weight: normal;
           font-size: 16px;
@@ -92,8 +169,14 @@
           cursor: pointer;
         }
         .login,.register {
-          padding: 10px 20px;
+          padding: 0 20px;
           border-top: 1px solid #eee;
+          height: 0;
+          overflow: hidden;
+          transition: height .4s;
+          &.show {
+            height: 193px;
+          }
 
           input {
             display: block;
