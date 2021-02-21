@@ -6,19 +6,28 @@
       <router-link to="/notebooks" title="笔记本"><i class="iconfont icon-notebook"></i></router-link>
       <router-link to="/trash/2" title="回收站"><i class="iconfont icon-trash"></i></router-link>
     </div>
-    <div class="logout">
-      <i class="iconfont icon-logout"></i>
+    <div class="logout" >
+      <i class="iconfont icon-logout" @click="handleLogout"></i>
     </div>
   </div>
 </template>
 
 <script>
   import Avatar from './Avatar'
+  import request from '@/helpers/request'
   export default {
     name: 'Sidebar',
     data() {
       return {
         msg: 'This is silde Page'
+      }
+    },
+    methods: {
+      handleLogout() {
+        console.log('handleLogout')
+        request('/auth/logout').then(res => {
+          console.log(res)
+        })
       }
     },
     components: {

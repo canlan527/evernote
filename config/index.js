@@ -3,7 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-
+const fs = require('fs')
 module.exports = {
   dev: {
 
@@ -11,7 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},
-
+    
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
@@ -20,7 +20,14 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+    proxy: [{
+      context: ['/api'],  //将 "https://urlname.com:8080/api" 转发到 "https://127.0.0.1:6495/api"
+      target: 'https://127.0.0.1:8080',
+      secure: false,
+      changeOrigin: true
+    }],
+    allowedHosts: [ 'https://note-server.hunger-valley.com' ],
+    https: true,
     /**
      * Source Maps
      */
