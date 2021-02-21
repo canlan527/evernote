@@ -14,7 +14,10 @@
 
 <script>
   import Avatar from './Avatar'
-  import request from '@/helpers/request'
+  import Auth from '@/apis/auth'
+  Auth.getInfo().then(res => {
+    console.log(res)
+  })
   export default {
     name: 'Sidebar',
     data() {
@@ -24,8 +27,7 @@
     },
     methods: {
       handleLogout() {
-        console.log('handleLogout')
-        request('/auth/logout').then(res => {
+        Auth.logout().then(res => {
           console.log(res)
         })
       }

@@ -81,10 +81,9 @@
         }
         this.register.isError = false;
         this.register.notice = '';
-        request('/auth/register','POST',{username:this.register.username, password: this.register.password})
-          .then(res => {
-            console.log(res)
-          })
+        Auth.register({username:this.register.username, password: this.register.password}).then(res => {
+          console.log(res)
+        })
       },
       onLogin() {
         let vRu = this.validUsername(this.login.username);
@@ -101,10 +100,9 @@
         }
         this.login.isError = false;
         this.login.notice = vRp.notice;
-        request('/auth/login','POST',{username:this.login.username, password: this.login.password})
-          .then(res => {
-            console.log(res)
-          })
+        Auth.login({username:this.register.username, password: this.register.password}).then(res => {
+          console.log(res)
+        })
       },
       validUsername(username) {
         return {
