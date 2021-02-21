@@ -82,7 +82,7 @@
         Auth.register({username:this.register.username, password: this.register.password}).then(res => {
           this.register.isError = false;
           this.register.notice = '';
-          Bus.$emit('userInfo', {username: this.register.username})
+          Bus.$emit('userInfo', {username: this.login.username})
           this.$router.push({path: 'notebooks'})
         }).catch(err => {
           this.register.isError = true;
