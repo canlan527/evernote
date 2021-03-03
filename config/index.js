@@ -4,30 +4,30 @@
 
 const path = require('path')
 const fs = require('fs')
+const { resourceUsage } = require('process')
 module.exports = {
   dev: {
-
+    
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+    },
     
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    https:{
+      // 读取openssl
+        key: fs.readFileSync(path.join(__dirname, '../dist/nginx.key'), 'utf8'),
+        cert: fs.readFileSync(path.join(__dirname, '../dist/nginx.crt'), 'utf8')
+    },
+    disableHostCheck: true,
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
-    proxy: [{
-      context: ['/api'],  //将 "https://urlname.com:8080/api" 转发到 "https://127.0.0.1:6495/api"
-      target: 'https://127.0.0.1:8080',
-      secure: false,
-      changeOrigin: true
-    }],
     allowedHosts: [ 'https://note-server.hunger-valley.com' ],
-    https: true,
     /**
      * Source Maps
      */
