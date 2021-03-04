@@ -11,7 +11,10 @@ export default {
   getAll() {
     return new Promise((resolve, reject) => {
       request(URL.GET).then(res => {
-        res.data = res.data.sort((notebook1, notebook2) => notebook1.createdAt < notebook2.createdAt)
+        res.data = res.data.sort((notebook1, notebook2) => {
+          let flag = notebook1.createdAt < notebook2.createdAt ? 1 : -1;
+          return flag;
+        })
         
         res.data.forEach(notebook => {
           notebook.friendlyCreatedAt = friendlyDate(notebook.createdAt)

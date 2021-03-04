@@ -22,12 +22,12 @@ export default new Router({
       component: () => import('@/components/NotebookList')
     },
     {
-      path: '/note/:noteId',
+      path: '/note',
       name: 'NoteDetail',
       component: () => import('@/components/NoteDetail')
     },
     {
-      path: '/trash/:noteId',
+      path: '/trash',
       name: 'TrashDetail',
       component: () => import('@/components/TrashDetail')
     }
