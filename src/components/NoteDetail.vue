@@ -1,11 +1,16 @@
 <template>
-  <div id="note-detail">
-    <h1>{{msg}}:{{$route.params.noteId}} </h1>
+  <div id="note" class="detail">
+    <note-side></note-side>
+    <div id="note-detail">
+      <h1> notebookId:{{$route.query.notebookId}} </h1>
+      <h1> noteId:{{$route.query.noteId}} </h1>
+    </div>
   </div>
 </template>
 
 <script>
-  import Auth from '@/apis/auth'
+  import Auth from '@/apis/auth';
+  import NoteSide from './NoteSide'
   export default {
     name: 'NoteDetail',
     data () {
@@ -19,10 +24,18 @@
           this.$router.push({path:'/login'})
         }
       })
+    },
+    components:{
+      NoteSide
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+#note {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  flex:1;
+}
 </style>
