@@ -26,23 +26,13 @@
 </template>
 
 <script>
-  import Auth from '@/apis/auth'
+  import Notebooks from '@/apis/notebooks'
+  
   export default {
     name: 'NoteSide',
     data () {
       return {
-        notebooks: [
-          {
-            id: 1,
-            title: 'hello',
-            updateAtFriendly: '1分钟前'
-          },
-          {
-            id: 2,
-            title: 'hello2',
-            updateAtFriendly: '2分钟前'
-          }
-        ],
+        notebooks: [],
         notes: [
           {
             id: 11,
@@ -58,10 +48,8 @@
       }
     },
     created() {
-      Auth.getInfo().then(res => {
-        if(!res.isLogin) {
-          this.$router.push({path:'/login'})
-        }
+      Notebooks.getAll().then(res => {
+        this.notebooks = res.data;
       })
     },
     methods: {
