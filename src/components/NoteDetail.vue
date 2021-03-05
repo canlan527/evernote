@@ -1,21 +1,25 @@
 <template>
   <div id="note" class="detail">
-    <note-side></note-side>
+    <note-side :curNote="curNote" @update:notes="val => notes = val"></note-side>
     <div class="note-detail">
-      <div class="note-bar">
-        <span>创建日期：{{curNote.createdAtFriendly}}</span>
-        <span>更新日期：{{curNote.updatedAtFriendly}}</span>
-        <span>{{curNote.statusText}}</span>
-        <span class="iconfont icon-delete"></span>
-        <span class="iconfont icon-fullscreen"></span>
+      <div class="note-empty" v-show="!curNote.id">请选择笔记 </div>
+      <div class="note-detail-ct" v-show="curNote.id">
+        <div class="note-bar">
+          <span>创建日期：{{curNote.createdAtFriendly}}</span>
+          <span>更新日期：{{curNote.updatedAtFriendly}}</span>
+          <span>{{statusText}}</span>
+          <span class="iconfont icon-delete" @click="deleteNote"></span>
+          <span class="iconfont icon-fullscreen" @click="isShowPreview = !isShowPreview"></span>
+        </div>
+        <div class="note-title">
+          <input type="text" @input="updateNote" @keydown="statusText='正在输入...'"  v-model="curNote.title" placeholder="输入标题">
+        </div>
+        <div class="editor">
+          <textarea v-show="!isShowPreview" @input="updateNote" @keydown="statusText='正在输入...'" v-model="curNote.content" placeholder="输入内容，支持MarkDown语法"></textarea>
+          <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview"></div>
+        </div>
       </div>
-      <div class="note-title">
-        <input type="text"  :value="curNote.title" placeholder="输入标题">
-      </div>
-      <div class="editor">
-        <textarea v-show="true" :value="curNote.content" placeholder="输入内容，支持MarkDown语法"></textarea>
-        <div class="preview markdown-body" v-html="html" v-show="false"></div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -23,28 +27,65 @@
 <script>
   import Auth from '@/apis/auth';
   import NoteSide from './NoteSide'
+  import Bus from '@/helpers/bus'
+  import _ from 'lodash'
+  import Notes from '@/apis/notes'
+  import MarkdownIt from 'markdown-it'
+
+  let md = new MarkdownIt();
+
   export default {
     name: 'NoteDetail',
     data () {
       return {
-        curNote: {
-          title: '笔记标题',
-          content: 'this is  content',
-          createdAtFriendly: '1天前',
-          updatedAtFriendly: '1分钟前',
-          statusText: '未更新'
-        }
+        curNote: {},
+        notes: [],
+        statusText: '笔记未改动',
+        isShowPreview: false,
       }
     },
     created() {
       Auth.getInfo().then(res => {
         if(!res.isLogin) {
-          this.$router.push({path:'/login'})
+          this.$router.push({path:'/login'});
         }
+      })
+      Bus.$on('update:notes', val => {
+        this.curNote = val.find(note => note.id === this.$route.query.noteId || {})
       })
     },
     components:{
       NoteSide
+    },
+    computed:{
+      previewContent() {
+        return md.render(this.curNote.content || '')
+      }
+    },
+    methods:{
+      updateNote: _.debounce(function() {
+        Notes.updateNote({noteId: this.curNote.id}, {title: this.curNote.title, content: this.curNote.content}).then(res => {
+          console.log(res)
+          this.statusText = '已保存'
+        }).catch(err => {
+          console.log(err)
+          this.statusText = '保存出错'
+        })
+      }, 300),
+
+      deleteNote() {
+        Notes.deleteNote({noteId: this.curNote.id}).then(res => { // 从数据库里删除
+          this.$message.success(res.msg);
+          this.notes.splice(this.notes.indexOf(this.curNote), 1) // 从data的UI列表里删除
+          this.$router.replace({ path: '/note' }) // 路由重刷新
+        })
+      },
+
+    },
+    beforeRouteUpdate(to, from, next) {
+      console.log(this.curNote)
+      this.curNote = this.notes.find(note => note.id == to.query.noteId) || {};
+      next();
     }
   }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="note-sidebar">
-    <span class="btn add-note">添加笔记</span>
+    <span class="btn add-note" @click="addNote">添加笔记</span>
     <el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
       <span class="el-dropdown-link">
         {{curBook.title}}<i class="iconfont icon-down"></i>
@@ -28,10 +28,12 @@
 <script>
   import Notebooks from '@/apis/notebooks'
   import Notes from '@/apis/notes'
+  import Bus from '@/helpers/bus'
   window.Notes = Notes;
 
   export default {
     name: 'NoteSide',
+    props: ['curNote'],
     data () {
       return {
         notebooks: [],
@@ -45,7 +47,9 @@
         this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId) || this.notebooks[0] || {}
         return Notes.getAll({ notebookId: this.curBook.id})
       }).then(res => {
-        this.notes = res.data
+        this.notes = res.data;
+        this.$emit('update:notes', this.notes);
+        Bus.$emit("update:notes", this.notes)
       })
     },
     methods: {
@@ -56,6 +60,12 @@
         this.curBook = this.notebooks.find(notebook => notebook.id == notebookId)
         Notes.getAll({ notebookId }).then(res => {
             this.notes = res.data
+        })
+      },
+      addNote() {
+        Notes.addNote({notebookId: this.curBook.id}).then(res => {
+          console.log('add')
+          this.notes.unshift(res.data)
         })
       }
     }
