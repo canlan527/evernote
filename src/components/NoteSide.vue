@@ -51,11 +51,13 @@
     },
     methods: {
       handleCommand(notebookId) {
-        if(notebookId !== 'trash') {
-          Notes.getAll({ notebookId }).then(res => {
-             this.notes = res.data
-          })
+        if(notebookId === 'trash') {
+          return this.$router.push({ path: '/trash' })
         }
+        this.curBook = this.notebooks.find(notebook => notebook.id == notebookId)
+        Notes.getAll({ notebookId }).then(res => {
+            this.notes = res.data
+        })
       }
     }
   }
