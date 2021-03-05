@@ -15,12 +15,9 @@ export default {
           let flag = notebook1.createdAt < notebook2.createdAt ? 1 : -1;
           return flag;
         })
-        
         res.data.forEach(notebook => {
           notebook.friendlyCreatedAt = friendlyDate(notebook.createdAt)
         })
-
-        console.log(res.data[0].createdAt)
         resolve(res)
       }).catch(err => {
         reject(err)

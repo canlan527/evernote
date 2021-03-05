@@ -45,7 +45,6 @@
         this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId) || this.notebooks[0] || {}
         return Notes.getAll({ notebookId: this.curBook.id})
       }).then(res => {
-        console.log(res)
         this.notes = res.data
       })
     },

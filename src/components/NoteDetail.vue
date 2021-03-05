@@ -1,9 +1,21 @@
 <template>
   <div id="note" class="detail">
     <note-side></note-side>
-    <div id="note-detail">
-      <h1> notebookId:{{$route.query.notebookId}} </h1>
-      <h1> noteId:{{$route.query.noteId}} </h1>
+    <div class="note-detail">
+      <div class="note-bar">
+        <span>创建日期：{{curNote.createdAtFriendly}}</span>
+        <span>更新日期：{{curNote.updatedAtFriendly}}</span>
+        <span>{{curNote.statusText}}</span>
+        <span class="iconfont icon-delete"></span>
+        <span class="iconfont icon-fullscreen"></span>
+      </div>
+      <div class="note-title">
+        <input type="text"  :value="curNote.title" placeholder="输入标题">
+      </div>
+      <div class="editor">
+        <textarea v-show="true" :value="curNote.content" placeholder="输入内容，支持MarkDown语法"></textarea>
+        <div class="preview markdown-body" v-html="html" v-show="false"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -15,7 +27,13 @@
     name: 'NoteDetail',
     data () {
       return {
-        msg: '笔记本详情页'
+        curNote: {
+          title: '笔记标题',
+          content: 'this is  content',
+          createdAtFriendly: '1天前',
+          updatedAtFriendly: '1分钟前',
+          statusText: '未更新'
+        }
       }
     },
     created() {
@@ -32,10 +50,11 @@
 </script>
 
 <style lang="less" scoped>
-#note {
-  display: flex;
-  align-items: stretch;
-  background: #fff;
-  flex:1;
-}
+  @import url('../assets/css/note-detail.less');
+  #note {
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    flex:1;
+  }
 </style>
