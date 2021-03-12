@@ -109,9 +109,8 @@
           Bus.$emit('userInfo', {username: this.login.username})
           // 开始跳转
           this.$router.push({path: 'notebooks'})
-
         }).catch(err => {
-          console.log('err' + err.msg)
+          // console.log('err' + err.msg)
           this.isError = true;
           this.login.notice = err.msg
         }) 
