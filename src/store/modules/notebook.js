@@ -2,7 +2,8 @@ import Notebook from '@/apis/notebooks'
 import { Message } from 'element-ui';
 console.log(Message)
 const state = {
-  notebooks: []
+  notebooks: null,
+  curBookId: null,
 }
 
 const getters = {
@@ -27,24 +28,24 @@ const mutations = {
 
 const actions = {
   getNotebooks({ commit }) {
-    Notebook.getAll().then(res => {
+    return Notebook.getAll().then(res => {
       commit('setNotebooks', { notebooks: res.data })
     })
   },
   addNotebook({ commit }, payload) {
-    Notebook.addNotebook({title: payload.title}).then(res => {
+    return Notebook.addNotebook({title: payload.title}).then(res => {
       commit('addNotebook', { notebook: res.data })
       Message.success(res.msg)
     })  
   },
   updateNotebook({ commit }, payload) {
-    Notebook.updateNotebook(payload.notebookId, { title: payload.title }).then(res => {
+    return Notebook.updateNotebook(payload.notebookId, { title: payload.title }).then(res => {
       commit('updateNotebook', { notebookId: payload.notebookId, title: payload.title })
       Message.success(res.msg)
     })
   },
   deleteNotebook({ commit }, payload) {
-    Notebook.deleteNotebook(payload.notebookId).then(res => {
+    return Notebook.deleteNotebook(payload.notebookId).then(res => {
       commit('deleteNotebook', { notebookId: payload.notebookId })
       Message.success(res.msg)
     })

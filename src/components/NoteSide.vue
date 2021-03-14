@@ -29,6 +29,7 @@
   import Notebooks from '@/apis/notebooks'
   import Notes from '@/apis/notes'
   import Bus from '@/helpers/bus'
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   window.Notes = Notes;
 
   export default {
@@ -36,12 +37,16 @@
     props: ['curNote'],
     data () {
       return {
-        notebooks: [],
-        notes: [],
-        curBook: {},
+        // notebooks: [],
+        // notes: [],
+        // curBook: {},
       }
     },
     created() {
+      this.getNotebooks().then(() => {
+        
+      })
+
       Notebooks.getAll().then(res => {
         this.notebooks = res.data;
         this.curBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId) || this.notebooks[0] || {}
@@ -52,7 +57,18 @@
         Bus.$emit("update:notes", this.notes)
       })
     },
+    computed: {
+      ...mapGetters([
+        'notebooks',
+        'notes',
+        'curBook'
+      ])
+    },
     methods: {
+      ...mapActions([
+        'getNotebooks',
+        'getNotes',
+      ]),
       handleCommand(notebookId) {
         if(notebookId === 'trash') {
           return this.$router.push({ path: '/trash' })
