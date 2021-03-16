@@ -1,5 +1,5 @@
 import Notebook from '@/apis/notebooks'
-import Note from '@/apis/note'
+import Note from '@/apis/notes'
 import { Message } from 'element-ui';
 console.log(Message)
 const state = {
@@ -31,24 +31,24 @@ const mutations = {
 
 const actions = {
   getNotes({ commit }, { notebookId }) {
-    Note.getAll({ notebookId }).then(res => {
+    return Note.getAll({ notebookId }).then(res => {
       commit('setNotes', { notes: res.data })
     })
   },
   addNote({ commit }, { notebookId, title, content }) {
-    Note.addNote({ notebookId }, { title, content }).then(res => {
+    return Note.addNote({ notebookId }, { title, content }).then(res => {
       commit('addNote', { note: res.data })
       Message.success(res.msg)
     })    
   },
   updateNote({ commit },  { noteId, title, content }) {
-    Note.updateNote({ noteId }, { title, content }).then(res => {
+    return Note.updateNote({ noteId }, { title, content }).then(res => {
       commit('updateNote', { noteId, title, content })
       Message.success(res.msg)
     })
   },
   deleteNote({ commit },  { noteId }) {
-    Note.deleteNote({ noteId }).then(res => {
+    return Note.deleteNote({ noteId }).then(res => {
       commit('deleteNote', { noteId })
       Message.success(res.msg)
     })

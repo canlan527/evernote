@@ -8,10 +8,14 @@
       <el-button type="warning" plain>警告按钮</el-button>
       <el-button type="danger" plain>危险按钮</el-button>
     </el-row>
+
+    <div class="testLess">testLess</div>
   </div>
 </template>
 
 <script>
+import testLess from '@/assets/css/test.less'
+console.log(testLess)
 export default {
   name: 'HelloWorld',
   data () {
@@ -23,7 +27,14 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="less" scoped>
+//  @import url('../assets/css/test.less');
+//   .testLess {
+//     color: @mainColor;
+//     font-size: @fontSize;
+//   }
+
+
 h1, h2 {
   font-weight: normal;
 }
