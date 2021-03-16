@@ -31,15 +31,15 @@
   import _ from 'lodash'
   import Notes from '@/apis/notes'
   import MarkdownIt from 'markdown-it'
-
+  import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
   let md = new MarkdownIt();
 
   export default {
     name: 'NoteDetail',
     data () {
       return {
-        curNote: {},
-        notes: [],
+        // curNote: {},
+        // notes: [],
         statusText: '笔记未改动',
         isShowPreview: false,
       }
@@ -58,6 +58,9 @@
       NoteSide
     },
     computed:{
+      ...mapGetters([
+        'notes', 'curNote'
+      ]),
       previewContent() {
         return md.render(this.curNote.content || '')
       }
@@ -65,10 +68,10 @@
     methods:{
       updateNote: _.debounce(function() {
         Notes.updateNote({noteId: this.curNote.id}, {title: this.curNote.title, content: this.curNote.content}).then(res => {
-          console.log(res)
+          // console.log(res)
           this.statusText = '已保存'
         }).catch(err => {
-          console.log(err)
+          // console.log(err)
           this.statusText = '保存出错'
         })
       }, 300),

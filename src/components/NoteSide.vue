@@ -47,7 +47,9 @@
         this.$store.commit('setCurBook',{
           curBookId: this.$route.query.notebookId
         })
-        this.getNotes({ notebookId: this.curBook.id })
+        return this.getNotes({ notebookId: this.curBook.id })
+      }).then(() =>{
+        this.$store.commit('setCurNote', { curNoteId:this.$route.query.noteId })
       })
     },
     computed: {
