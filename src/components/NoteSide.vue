@@ -50,7 +50,7 @@
         // })
         return this.getNotes({ notebookId: this.curBook.id })
       }).then(() =>{
-        console.log(this.$route.query.noteId)
+        // console.log(this.$route.query.noteId)
         this.setCurNote({ curNoteId:this.$route.query.noteId })
         // this.$store.commit('setCurNote', { curNoteId:this.$route.query.noteId })
       })
