@@ -8,14 +8,14 @@
           <span>创建日期：{{curNote.createdAtFriendly}}</span>
           <span>更新日期：{{curNote.updatedAtFriendly}}</span>
           <span>{{statusText}}</span>
-          <span class="iconfont icon-delete" @click="deleteNote"></span>
+          <span class="iconfont icon-delete" @click="onDeleteNote"></span>
           <span class="iconfont icon-fullscreen" @click="isShowPreview = !isShowPreview"></span>
         </div>
         <div class="note-title">
-          <input type="text" @input="updateNote" @keydown="statusText='正在输入...'"  v-model="curNote.title" placeholder="输入标题">
+          <input type="text" @input="onUpdateNote" @keydown="statusText='正在输入...'"  v-model="curNote.title" placeholder="输入标题">
         </div>
         <div class="editor">
-          <textarea v-show="!isShowPreview" @input="updateNote" @keydown="statusText='正在输入...'" v-model="curNote.content" placeholder="输入内容，支持MarkDown语法"></textarea>
+          <textarea v-show="!isShowPreview" @input="onUpdateNote" @keydown="statusText='正在输入...'" v-model="curNote.content" placeholder="输入内容，支持MarkDown语法"></textarea>
           <div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview"></div>
         </div>
       </div>
@@ -50,24 +50,35 @@
           this.$router.push({path:'/login'});
         }
       })
-      Bus.$on('update:notes', val => {
-        this.curNote = val.find(note => note.id === this.$route.query.noteId || {})
-      })
+      // Bus.$on('update:notes', val => {
+      //   this.curNote = val.find(note => note.id === this.$route.query.noteId || {})
+      // })
     },
+    // mounted() {
+    //   this.previewContent()
+    // },
     components:{
       NoteSide
     },
     computed:{
       ...mapGetters([
-        'notes', 'curNote'
+        'notes', 
+        'curNote',
       ]),
       previewContent() {
         return md.render(this.curNote.content || '')
       }
     },
     methods:{
-      updateNote: _.debounce(function() {
-        Notes.updateNote({noteId: this.curNote.id}, {title: this.curNote.title, content: this.curNote.content}).then(res => {
+      ...mapMutations([
+        'setCurNote'
+      ]),
+      ...mapActions([
+        'updateNote',
+        'deleteNote'
+      ]),
+      onUpdateNote: _.debounce(function() {
+        this.updateNote({ noteId: this.curNote.id, title: this.curNote.title, content: this.curNote.content }).then(res => {
           // console.log(res)
           this.statusText = '已保存'
         }).catch(err => {
@@ -76,18 +87,19 @@
         })
       }, 300),
 
-      deleteNote() {
-        Notes.deleteNote({noteId: this.curNote.id}).then(res => { // 从数据库里删除
-          this.$message.success(res.msg);
-          this.notes.splice(this.notes.indexOf(this.curNote), 1) // 从data的UI列表里删除
+      onDeleteNote() {
+        this.deleteNote({noteId: this.curNote.id}).then(res => { // 从数据库里删除
+          // this.$message.success(res.msg);
+          // this.notes.splice(this.notes.indexOf(this.curNote), 1) // 从data的UI列表里删除
           this.$router.replace({ path: '/note' }) // 路由重刷新
         })
       },
 
     },
     beforeRouteUpdate(to, from, next) {
-      console.log(this.curNote)
-      this.curNote = this.notes.find(note => note.id == to.query.noteId) || {};
+      this.setCurNote({ curNoteId: to.query.noteId })
+      // this.curNote = this.notes.find(note => note.id == to.query.noteId) || {};
+      md.render(this.curNote.content || '')
       next();
     }
   }
