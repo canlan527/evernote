@@ -32,8 +32,7 @@ const actions = {
   checkLogin({ commit }, payload) {
     return Auth.getInfo().then(res => {
       if(!res.isLogin) {
-        console.log('jump');
-        router.push(payload)
+        if(payload) router.push(payload)
       } else {
         commit('setUser', { user: res.data })
       }

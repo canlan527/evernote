@@ -13,7 +13,7 @@ const getters = {
   curNote: state => {
     // console.log(state.curNoteId);
     if(!Array.isArray(state.notes)) return {}
-    if(!state.curNoteId) return state.notes[0] || {}
+    if(!state.curNoteId) return state.notes[0]
     return state.notes.find(note => note.id == state.curNoteId) || {}
   } 
 }
