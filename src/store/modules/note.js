@@ -1,7 +1,7 @@
 import Notebook from '@/apis/notebooks'
 import Note from '@/apis/notes'
 import { Message } from 'element-ui';
-console.log(Message)
+// console.log(Message)
 const state = {
   // notebooks: [],
   notes: null,
@@ -11,9 +11,9 @@ const state = {
 const getters = {
   notes: state => state.notes || [],
   curNote: state => {
-    console.log(state.curNoteId);
+    // console.log(state.curNoteId);
     if(!Array.isArray(state.notes)) return {}
-    if(!state.curNoteId) return state.notes[0] 
+    if(!state.curNoteId) return state.notes[0] || {}
     return state.notes.find(note => note.id == state.curNoteId) || {}
   } 
 }

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import Auth from '@/apis/auth';
+  // import Auth from '@/apis/auth';
   import NoteSide from './NoteSide'
   import Bus from '@/helpers/bus'
   import _ from 'lodash'
@@ -45,14 +45,15 @@
       }
     },
     created() {
-      Auth.getInfo().then(res => {
-        if(!res.isLogin) {
-          this.$router.push({path:'/login'});
-        }
-      })
+      // Auth.getInfo().then(res => {
+      //   if(!res.isLogin) {
+      //     this.$router.push({path:'/login'});
+      //   }
+      // })
       // Bus.$on('update:notes', val => {
       //   this.curNote = val.find(note => note.id === this.$route.query.noteId || {})
       // })
+      this.checkLogin({ path: '/login' })
     },
     // mounted() {
     //   this.previewContent()
@@ -75,7 +76,8 @@
       ]),
       ...mapActions([
         'updateNote',
-        'deleteNote'
+        'deleteNote',
+        'checkLogin'
       ]),
       onUpdateNote: _.debounce(function() {
         this.updateNote({ noteId: this.curNote.id, title: this.curNote.title, content: this.curNote.content }).then(res => {
