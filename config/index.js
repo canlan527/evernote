@@ -17,11 +17,7 @@ module.exports = {
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    https:{
-      // 读取openssl
-        key: fs.readFileSync(path.join(__dirname, '../dist/nginx.key'), 'utf8'),
-        cert: fs.readFileSync(path.join(__dirname, '../dist/nginx.crt'), 'utf8')
-    },
+    https:true,
     disableHostCheck: true,
     autoOpenBrowser: false,
     errorOverlay: true,
