@@ -101,7 +101,7 @@
     beforeRouteUpdate(to, from, next) {
       this.setCurNote({ curNoteId: to.query.noteId })
       // this.curNote = this.notes.find(note => note.id == to.query.noteId) || {};
-      md.render(this.curNote.content || '')
+      // md.render(this.curNote.content || '')
       next();
     }
   }

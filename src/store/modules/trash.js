@@ -8,7 +8,6 @@ const state = {
 const getters = {
   trashNotes: state => state.trashNotes || {},
   curTrashNote: (state, getters) => {
-    console.log(0);
     if(!state.curTrashNoteId) return getters.trashNotes[0] || {}
     return state.trashNotes.find(note => note.id == state.curTrashNoteId) || {}
   },

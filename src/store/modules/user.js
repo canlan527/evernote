@@ -30,7 +30,7 @@ const actions = {
     })
   },
   checkLogin({ commit,state }, payload) {
-    if(state.user != null) return new Promsie.resolve();
+    if(state.user != null) return Promise.resolve();
     return Auth.getInfo().then(res => {
       if(!res.isLogin) {
         if(payload) router.push(payload)
