@@ -27,9 +27,9 @@
 <script>
   // import Auth from '@/apis/auth';
   import NoteSide from './NoteSide'
-  import Bus from '@/helpers/bus'
+  // import Bus from '@/helpers/bus'
   import _ from 'lodash'
-  import Notes from '@/apis/notes'
+  // import Notes from '@/apis/notes'
   import MarkdownIt from 'markdown-it'
   import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
   let md = new MarkdownIt();
