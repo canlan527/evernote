@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <h1>{{msg}}</h1>
+    <!-- <h1>{{msg}}</h1> -->
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
@@ -32,15 +32,15 @@
 </template>
 
 <script>
-  import Auth from '@/apis/auth'
-  import Bus from '@/helpers/bus'
+  // import Auth from '@/apis/auth'
+  // import Bus from '@/helpers/bus'
   import { mapGetters, mapActions } from 'vuex'
 
   export default {
     name: 'Login',
     data() {
       return {
-        msg: 'This is Login Page',
+        // msg: 'This is Login Page',
         isShowRegister: false,
         isShowLogin: true,
         login: {

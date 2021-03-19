@@ -14,7 +14,7 @@
               <span>{{notebook.noteCounts}}</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
-              <span class="date">{{notebook.friendlyCreatedAt}}</span>
+              <span class="date">{{notebook.createdAtFriendly}}</span>
             </div>
           </router-link>
         </div>
@@ -24,12 +24,12 @@
 </template>
 
 <script>
-  import Auth from '@/apis/auth'
-  import Notebooks from '@/apis/notebooks'
-  import { friendlyDate } from '@/helpers/utils'
+  // import Auth from '@/apis/auth'
+  // import Notebooks from '@/apis/notebooks'
+  // import { friendlyDate } from '@/helpers/utils'
   import { mapState, mapActions, mapGetters } from 'vuex'
 
-  window.notebooks = Notebooks
+  // window.notebooks = Notebooks
   export default {
     name: 'NotebookList',
     data() {

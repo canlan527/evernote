@@ -36,13 +36,13 @@
 </template>
 
 <script>
-  import Auth from '@/apis/auth'
+  // import Auth from '@/apis/auth'
   import MarkdownIt from 'markdown-it'
-  import Trash from '@/apis/trash'
+  // import Trash from '@/apis/trash'
   import { mapGetters, mapActions, mapMutations } from 'vuex'
   let md = new MarkdownIt()
   
-  window.Trash = Trash;
+  // window.Trash = Trash;
   
 
   export default {
@@ -85,6 +85,12 @@
       this.getNotebooks();
       this.getTrashNotes().then(res =>{
         this.setCurTrashNote({ curTrashNoteId: this.$route.query.noteId})
+        this.$router.replace({
+          path: '/trash',
+          query: {
+            noteId: this.curTrashNote.id
+          }
+        })
       })
     },
     computed:{
@@ -110,10 +116,31 @@
         'getNotebooks'
       ]),
       onRevert() {
-        this.revertTrashNote({ noteId: this.curTrashNote.id })
+        this.revertTrashNote({ noteId: this.curTrashNote.id }).then(res => {
+          this.setCurTrashNote()
+          this.$router.replace({
+            path:'/trash',
+            query: {
+              noteId: this.curTrashNote.id
+            }
+          })
+        })
+        
       },
       onDelete() {
-        this.deleteTrashNote({ noteId: this.curTrashNote.id });
+        this.$confirm('删除后该笔记无法恢复', '彻底删除', {
+          confirmButton: '确定',
+          cancelButton:'取消',
+          type: 'warning'
+        }).then(() => {
+           return this.deleteTrashNote({ noteId: this.curTrashNote.id });
+        }).then(() => {
+          this.setCurTrashNote();
+          this.$router.replace({
+            path:'/trash',
+            query: this.curTrashNote.id
+          })
+        })
       }
     },
     beforeRouteUpdate(to, from ,next) {

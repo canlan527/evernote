@@ -14,22 +14,28 @@
 
 <script>
   import Avatar from './Avatar'
-  import Auth from '@/apis/auth'
-  Auth.getInfo().then(res => {
-    console.log(res)
-  })
+  // import Auth from '@/apis/auth'
+  import { mapActions } from 'vuex'
+
+  // Auth.getInfo().then(res => {
+  //   console.log(res)
+  // })
   export default {
     name: 'Sidebar',
     data() {
       return {
-        msg: 'This is silde Page'
+        // msg: 'This is silde Page'
       }
     },
     methods: {
+      ...mapActions([
+        'logout'
+      ]),
       handleLogout() {
-        Auth.logout().then(res => {
-          this.$router.push({path: 'login'})
-        })
+        // Auth.logout().then(res => {
+        //   this.$router.push({path: 'login'})
+        // })
+        this.logout({path:'/login'})
       }
     },
     components: {
