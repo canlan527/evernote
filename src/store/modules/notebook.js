@@ -35,7 +35,8 @@ const mutations = {
 }
 
 const actions = {
-  getNotebooks({ commit }) {
+  getNotebooks({ commit,state }) {
+    if(state.notebooks != null) return new Promsie.resolve();
     return Notebook.getAll().then(res => {
       commit('setNotebooks', { notebooks: res.data })
     })

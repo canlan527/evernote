@@ -29,7 +29,8 @@ const actions = {
       commit('setUser', { user: res.data })
     })
   },
-  checkLogin({ commit }, payload) {
+  checkLogin({ commit,state }, payload) {
+    if(state.user != null) return new Promsie.resolve();
     return Auth.getInfo().then(res => {
       if(!res.isLogin) {
         if(payload) router.push(payload)

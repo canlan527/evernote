@@ -56,7 +56,7 @@
         //   createdAtFriendly: '2小时前',
         //   updatedAtFriendly: '刚刚',
         // },
-        belongTo:'我的笔记本',
+        // belongTo:'我的笔记本',
         // trashNotes: [
         //   {
         //     id:3,
@@ -82,6 +82,7 @@
       //   }
       // })
       this.checkLogin({ path: '/login' });
+      this.getNotebooks();
       this.getTrashNotes().then(res =>{
         this.setCurTrashNote({ curTrashNoteId: this.$route.query.noteId})
       })
@@ -90,6 +91,7 @@
       ...mapGetters([
         'trashNotes',
         'curTrashNote',
+        'belongTo',
       ]),
       compiledMarkdown() {
         return md.render(this.curTrashNote.content || "")
@@ -104,7 +106,8 @@
         'checkLogin',
         'revertTrashNote',
         'deleteTrashNote',
-        'getTrashNotes'
+        'getTrashNotes',
+        'getNotebooks'
       ]),
       onRevert() {
         this.revertTrashNote({ noteId: this.curTrashNote.id })
